@@ -121,6 +121,7 @@ func TestWalk(t *testing.T) {
 	})
 
 	t.Run("with function", func(t *testing.T) {
+		// Define a function that returns Profile structs that we can read
 		aFunction := func() (Profile, Profile) {
 			return Profile{33, "Berlin"}, Profile{34, "Katowice"}
 		}
