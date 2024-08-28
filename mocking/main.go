@@ -7,7 +7,6 @@ import (
 	"time"
 )
 
-// Create our interface
 type Sleeper interface {
 	Sleep()
 }
@@ -17,6 +16,7 @@ type ConfigurableSleeper struct {
 	sleep    func(time.Duration)
 }
 
+// Sleep for the duration of c, the ConfigurableSleeper
 func (c *ConfigurableSleeper) Sleep() {
 	c.sleep(c.duration)
 }
