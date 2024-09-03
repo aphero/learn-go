@@ -1,1 +1,8 @@
 Based on the tutorials provided by https://quii.gitbook.io/learn-go-with-tests
+
+# An issue with the 'maths' lesson
+
+Ran into an issue where it wouldn't properly import the 'clockface' package. It turns out that you DON'T include the name of the package in the import string.
+
+Incorrect: `learn-go/maths/clockface`
+Correct: `learn-go/maths`
