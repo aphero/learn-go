@@ -11,27 +11,44 @@ type Point struct {
 	Y float64
 }
 
-const secondHandLength = 90
-const clockCenterX = 150
-const clockCenterY = 150
+// Seconds
 
-// SecondHand is the unit vector of the second hand of an analogue clock at time `t`
-// represented as a Point.
-func SecondHand(t time.Time) Point {
-	p := SecondHandPoint(t)
-	p = Point{p.X * secondHandLength, p.Y * secondHandLength} // scale
-	p = Point{p.X, -p.Y}                                      // flip - so the clock rotates clockwise
-	p = Point{p.X + clockCenterX, p.Y + clockCenterY}         // translate - move our circle into position
-	return p
+func secondsInRadians(t time.Time) float64 {
+	return (math.Pi / (30 / float64(t.Second())))
 }
 
-func SecondHandPoint(t time.Time) Point {
-	angle := SecondsInRadians(t)
+func secondHandPoint(t time.Time) Point {
+	angle := secondsInRadians(t)
 	x := math.Sin(angle)
 	y := math.Cos(angle)
 	return Point{x, y}
 }
 
-func SecondsInRadians(t time.Time) float64 {
-	return (math.Pi / (30 / float64(t.Second())))
+// Minutes
+
+func minuteHandPoint(t time.Time) Point {
+	return AngleToPoint(minutesInRadians(t))
+}
+
+func minutesInRadians(t time.Time) float64 {
+	return (math.Pi / (30 / float64(t.Minute())))
+}
+
+// WHERE DO THESE GO?
+
+func AngleInRadians(t time.Time) float64 {
+	// Here we're converting the seconds to radians and dividing by 60 to get the one minute adjustment
+	// for the minute hand.  Not dividing by 60 gives us the angle of the second hand.
+	return (secondsInRadians(t) / 60) +
+		// Then we divide 30 by the minute we're rendering so we know how many radians we're dealing with
+		// and then divide PI by the result to get the actual radians that our angle is at, just like we
+		// do for the second hand calculation.
+		(math.Pi / (30 / float64(t.Minute())))
+}
+
+func AngleToPoint(angle float64) Point {
+	x := math.Sin(angle)
+	y := math.Cos(angle)
+
+	return Point{x, y}
 }
